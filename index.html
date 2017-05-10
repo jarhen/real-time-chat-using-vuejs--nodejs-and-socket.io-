@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<link href="main.css" rel="stylesheet">
+	</head>
+<body>
+<div id="app">
+	<div class="col-md-2 userlist">
+		
+			<div class="panel-heading"><span class="glyphicon glyphicon-user"></span>Online ({{ connectUsers.length}}) </div>
+			<ul class="chat">
+				<li v-for="user in connectUsers">
+					{{ user }} &nbsp;<span v-if="userIsTyping(user)" class="glyphicon glyphicon-pencil">..</span>
+				</li>
+				
+			</ul>
+	</div>
+<div class="col-md-10">
+<div id="livechat-container">
+<div class="panel panel-primary">
+  <div class="panel-heading">chat window</div>
+  <div class="panel-body">
+  <ul class="chat" id="message">
+	<li v-for="message in messages" class="left clearfix">
+		<div v-if=" message.type =='info'" class="info">
+			{{message.msg}}
+		</div>
+		<div v-if = "message.type == 'chat'">
+			<span class="chat-img pull-left"> 
+				<img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+            </span>
+			 <div class="chat-body clearfix">
+                   <div class="header">
+                        <strong class="primary-font">{{ message.user }}</strong> <small class="pull-right text-muted">
+                            <span class="glyphicon glyphicon-time"></span>&nbsp;{{ message.timestamp }}</small>
+                    </div>
+                        <p>
+                            {{ message.text }}
+                        </p>
+            </div>
+		</div>
+	</li>
+	
+  </ul>
+  </div>
+    <div class="panel-footer">
+	<form @submit.prevent="send">
+		<input v-model="message.text" v-on:keyup="usersAreTyping" v-on:keyup.13="stoppedTyping('13')" v-on:keyup.8="stoppedTyping('8')" type="text" class="form-control input-lg" placeholder="Type chat here" />
+	</form>
+	</div>
+</div>
+
+</div>
+</div>
+</div>
+<script src="https://cdn.socket.io/socket.io-1.7.3.js"></script>
+<script src="https://unpkg.com/vue@2.3.3/dist/vue.js" ></script>
+<script src="https://unpkg.com/axios@0.16.1/dist/axios.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="client.js" ></script>
+</body>
+</html>
